@@ -1,0 +1,14 @@
+name: GridPilot MVP Check
+
+on: [push, pull_request]
+
+jobs:
+  smoke-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r requirements.txt
+      - run: python -c "from optimizer import optimize_scenario; r=optimize_scenario(88,100,5,4,3,80,50,100); assert r['best']['post_peak'] <= r['baseline_peak']; print('GridPilot MVP OK')"
